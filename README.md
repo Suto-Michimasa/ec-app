@@ -1,2 +1,2 @@
 # ec-app
-ecサイト
+Reduxを用いたecサイト
