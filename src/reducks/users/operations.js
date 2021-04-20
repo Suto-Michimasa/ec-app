@@ -4,25 +4,32 @@ import { auth, db, FirebaseTimestamp } from "../../firebase/index"
 
 export const signIn = (email, password) => {
   return async (dispatch, getState) => {
-    const state = getState()
-    const isSignedIn = state.users.isSignedIn
-
-    if (!isSignedIn) {
-      const url = "https://api.github.com/users/deatiger"
-
-      const response = await fetch(url)
-        .then(res => res.json())
-        .catch(() => null)
-
-      const username = response.login
-
-      dispatch(signInAction({
-        isSignedIn: true,
-        uid: "0001",
-        username: username,
-      }))
-      dispatch(push('/'))
+    //Validation
+    if (email === "" || password === "") {
+      alert("必須項目が未入力です。")
+      return false
     }
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(result => {
+        const user = result.user
+        if (user) {
+          const uid = user.uid
+
+          db.collection('users').doc(uid).get()
+            .then(snapshot => {
+              const data = snapshot.data();
+              dispatch(signInAction({
+                isSignedIn: true,
+                role: data.role,
+                uid: uid,
+                username: data.username
+              }))
+              dispatch(push('/'))
+            })
+
+        }
+      })
   }
 }
 export const signUp = (username, email, password, confirmPassword) => {
