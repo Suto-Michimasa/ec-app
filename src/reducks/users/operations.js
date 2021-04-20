@@ -40,7 +40,7 @@ export const signUp = (username, email, password, confirmPassword) => {
 
     return auth.createUserWithEmailAndPassword(email, password)
       .then(result => {
-        const user = result.username
+        const user = result.user
 
         if (user) {
           const uid = user.uid
