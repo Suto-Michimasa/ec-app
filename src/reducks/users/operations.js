@@ -96,6 +96,23 @@ export const signUp = (username, email, password, confirmPassword) => {
   }
 }
 
+export const resetPassword = (email) => {
+  return async (dispatch) => {
+    if (email === "") {
+      alert("必須項目が未入力です。")
+      return false
+    } else {
+      auth.sendPasswordResetEmail(email)
+        .then(() => {
+          alert("入力されたアドレスにパスワードリセット用のメールが送信されました。")
+          dispatch(push('/signin'));
+        }).catch(() => {
+          alert("パスワードリセットに失敗しました")
+        })
+    }
+  }
+}
+
 export const signOut = () => {
   return async (dispatch) => {
     auth.signOut()
