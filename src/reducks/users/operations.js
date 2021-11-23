@@ -7,18 +7,17 @@ export const listenAuthState = () => {
   return async (dispatch) => {
     return auth.onAuthStateChanged(user => {
       if (user) {
-        const uid = user.uid
-
+        const uid = user.uid;
         db.collection('users').doc(uid).get()
           .then(snapshot => {
             const data = snapshot.data();
+            // console.log(data);
             dispatch(signInAction({
               isSignedIn: true,
               role: data.role,
               uid: uid,
               username: data.username
             }))
-            dispatch(push('/'))
           })
 
       } else {
@@ -34,7 +33,6 @@ export const signIn = (email, password) => {
       alert("必須項目が未入力です。")
       return false
     }
-
     auth.signInWithEmailAndPassword(email, password)
       .then(result => {
         const user = result.user
