@@ -18,7 +18,7 @@ const SelectBox = (props) => {
       <InputLabel>{props.label}</InputLabel>
       <Select
         required={props.required} value={props.value}
-        onChange={(event) => props.select}
+        onChange={(event) => props.select(event.target.value)}
       >
         {props.options.map((option) => (
           <MenuItem key={option.id} value={option.id}>{option.name}</MenuItem>
